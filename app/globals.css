@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pink: #E83D8A;
+  --color-pink-light: #f472b6;
+  --color-pink-neon: #ff2d92;
+  --color-dark: #060606;
+  --color-dark-2: #0e0e0e;
+  --color-dark-3: #111111;
+  --color-dark-card: #121212;
+  --color-dark-border: #1e1e1e;
+  --color-gold: #c8942a;
+  --color-gold-light: #e8c060;
+
+  --shadow-pink: 0 0 30px rgba(232,61,138,0.4);
+  --shadow-pink-sm: 0 0 12px rgba(232,61,138,0.3);
+  --shadow-pink-lg: 0 0 60px rgba(232,61,138,0.3);
+  --shadow-gold: 0 0 30px rgba(200,148,42,0.4);
+  --shadow-gold-lg: 0 0 60px rgba(200,148,42,0.3);
+
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-fadeInUp: fadeInUp 0.6s ease forwards;
+  --animate-pulseGlow: pulseGlow 2s ease-in-out infinite;
+  --animate-heroZoom: heroZoom 8s ease-in-out forwards;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 8px #E83D8A44; }
+    50% { box-shadow: 0 0 22px #E83D8A88, 0 0 40px #E83D8A33; }
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.07); }
+  }
+}
