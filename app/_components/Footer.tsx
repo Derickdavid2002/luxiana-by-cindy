@@ -8,7 +8,7 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { label: "💬 WhatsApp", href: "https://wa.me/2348000000000" },
+  { label: "💬 WhatsApp", href: "https://wa.me/2347086253922" },
   { label: "📸 Instagram", href: "https://instagram.com/luxianabeauty" },
   { label: "🎵 TikTok", href: "https://tiktok.com/@luxianabeauty" },
 ];

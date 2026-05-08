@@ -21,7 +21,7 @@ export default function CartDrawer() {
       .map(i => `• ${i.name} x${i.qty} — ${fmt(i.price * i.qty)}`)
       .join("\n")
     const msg = `Hello Luxiana Beauty! 🌸\n\nI'd like to place an order:\n\n${lines}\n\n*Total: ${fmt(cartTotal)}*\n\nPlease confirm availability and payment details. Thank you!`
-    return `https://wa.me/2348000000000?text=${encodeURIComponent(msg)}`
+    return `https://wa.me/2347086253922?text=${encodeURIComponent(msg)}`
   }
 
   return (

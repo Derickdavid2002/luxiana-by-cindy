@@ -1,6 +1,6 @@
 export default function ContactSection() {
   const socials = [
-    { icon: "💬", label: "WhatsApp", sub: "Chat with us", hoverBorder: "hover:border-[#25D366]", hoverShadow: "hover:shadow-[0_0_30px_rgba(37,211,102,0.2)]", href: "https://wa.me/2348000000000" },
+    { icon: "💬", label: "WhatsApp", sub: "Chat with us", hoverBorder: "hover:border-[#25D366]", hoverShadow: "hover:shadow-[0_0_30px_rgba(37,211,102,0.2)]", href: "https://wa.me/2347086253922" },
     { icon: "📸", label: "Instagram", sub: "@luxianabeauty", hoverBorder: "hover:border-[#E1306C]", hoverShadow: "hover:shadow-[0_0_30px_rgba(225,48,108,0.2)]", href: "https://instagram.com/luxianabeauty" },
     { icon: "🎵", label: "TikTok", sub: "@luxianabeauty", hoverBorder: "hover:border-[#69C9D0]", hoverShadow: "hover:shadow-[0_0_30px_rgba(105,201,208,0.2)]", href: "https://tiktok.com/@luxianabeauty" },
   ];
@@ -43,7 +43,7 @@ export default function ContactSection() {
             Add items to your cart and checkout via WhatsApp, or message us directly with questions.
           </p>
           <a
-            href="https://wa.me/2348000000000"
+            href="https://wa.me/2347086253922"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2.5 bg-gradient-to-br from-[#128C7E] to-[#25D366] text-white px-12 py-[15px] rounded-xl font-bold text-sm no-underline shadow-[0_4px_24px_rgba(37,211,102,0.35)]"

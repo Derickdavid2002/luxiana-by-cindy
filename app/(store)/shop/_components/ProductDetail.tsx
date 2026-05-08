@@ -150,7 +150,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
                 {/* ✅ FIXED WhatsApp */}
                 <a
-                  href={`https://wa.me/234XXXXXXXXXX?text=${encodeURIComponent(
+                  href={`https://wa.me/2347086253922?text=${encodeURIComponent(
                     `Hello! I'd like to order *${product.name}* x${qty} — ${fmt(product.price * qty)}. Please confirm availability. Thank you!`
                   )}`}
                   target="_blank"

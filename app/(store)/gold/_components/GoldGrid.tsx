@@ -93,7 +93,7 @@ export default function GoldGrid({ items }: { items: GoldItem[] }) {
 
                     {/* ✅ FIXED WhatsApp */}
                     <a
-                      href={`https://wa.me/234XXXXXXXXXX?text=${encodeURIComponent(
+                      href={`https://wa.me/2347086253922?text=${encodeURIComponent(
                         `Hello! I'm interested in the *${item.name}* from the Gold Collection. Please provide more details and pricing. Thank you!`
                       )}`}
                       target="_blank"
