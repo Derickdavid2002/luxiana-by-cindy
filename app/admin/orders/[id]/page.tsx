@@ -2,10 +2,9 @@ import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { adminClient } from "@/lib/adminSanity"
 import AdminLayout from "../../_components/AdminLayout"
-import EditProductForm from "./_components/EditProductForm"
-import { Product } from "../../../types"
+import OrderDetail from "./_components/OrderDetail"
 
-export default async function EditProductPage({
+export default async function OrderDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>
@@ -15,18 +14,19 @@ export default async function EditProductPage({
 
   const { id } = await params
 
-  const product: Product = await adminClient.fetch(
-    `*[_type == "product" && _id == $id][0] {
-      _id, name, slug, category, price, description, image, inStock, featured
+  const order = await adminClient.fetch(
+    `*[_type == "order" && _id == $id][0] {
+      _id, orderNumber, status, customer, delivery,
+      items, subtotal, total, proofOfPayment, notes, createdAt
     }`,
     { id }
   )
 
-  if (!product) redirect("/admin/products")
+  if (!order) redirect("/admin/orders")
 
   return (
     <AdminLayout>
-      <EditProductForm product={product} />
+      <OrderDetail order={order} />
     </AdminLayout>
   )
 }

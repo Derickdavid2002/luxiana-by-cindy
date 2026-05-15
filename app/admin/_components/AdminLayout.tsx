@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from "next/navigation"
 import { signOut } from "next-auth/react"
 import Link from "next/link"
+import { MdShoppingBag } from "react-icons/md"
+
 import { Button } from "@/components/ui/button"
 import {
   MdDashboard,
@@ -20,6 +22,7 @@ import { useState } from "react"
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: MdDashboard, section: "main" },
   { href: "/admin/products", label: "Products", icon: MdInventory2, section: "main" },
+  { href: "/admin/orders", label: "Orders", icon: MdShoppingBag, section: "main" },
   { href: "/admin/products/new", label: "Add Product", icon: MdAddBox, section: "manage" },
   { href: "/admin/gold", label: "Gold Collection", icon: MdCollections, section: "manage" },
   { href: "/", label: "View Website", icon: MdLanguage, section: "store" },

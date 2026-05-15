@@ -1,0 +1,45 @@
+export const DELIVERY_FEES: Record<string, number> = {
+  "Lagos": 3000,
+  "Abuja": 4500,
+  "Rivers": 4500,
+  "Ogun": 3500,
+  "Oyo": 4000,
+  "Kano": 5500,
+  "Kaduna": 5500,
+  "Anambra": 4500,
+  "Enugu": 5000,
+  "Imo": 5000,
+  "Delta": 4500,
+  "Edo": 4500,
+  "Kwara": 4500,
+  "Osun": 4000,
+  "Ekiti": 4500,
+  "Ondo": 4500,
+  "Cross River": 5500,
+  "Akwa Ibom": 5500,
+  "Bayelsa": 5500,
+  "Benue": 5500,
+  "Plateau": 5500,
+  "Nassarawa": 5000,
+  "Kogi": 5000,
+  "Niger": 5000,
+  "Sokoto": 6000,
+  "Kebbi": 6000,
+  "Zamfara": 6000,
+  "Jigawa": 6000,
+  "Bauchi": 6000,
+  "Gombe": 6000,
+  "Yobe": 6500,
+  "Borno": 6500,
+  "Adamawa": 6500,
+  "Taraba": 6500,
+  "Abia": 5000,
+  "Ebonyi": 5000,
+  "FCT": 4500,
+}
+
+export const NIGERIAN_STATES = Object.keys(DELIVERY_FEES).sort()
+
+export function getDeliveryFee(state: string): number {
+  return DELIVERY_FEES[state] ?? 6000
+}

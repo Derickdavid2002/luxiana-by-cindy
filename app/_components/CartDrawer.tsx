@@ -1,27 +1,25 @@
 "use client"
 
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useCartStore } from "../store/cartStore"
 import { urlFor } from "@/lib/sanity"
-import { FaWhatsapp } from "react-icons/fa"
 import { RxCross2 } from "react-icons/rx"
 import { HiOutlineShoppingBag } from "react-icons/hi2"
-import { MdAdd, MdRemove } from "react-icons/md"
+import { MdAdd, MdRemove, MdArrowForward } from "react-icons/md"
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`
 
 export default function CartDrawer() {
+  const router = useRouter()
   const { items, isOpen, closeCart, removeItem, updateQty } = useCartStore()
 
   const cartCount = items.reduce((a, i) => a + i.qty, 0)
   const cartTotal = items.reduce((a, i) => a + i.price * i.qty, 0)
 
-  const buildWhatsAppMsg = () => {
-    const lines = items
-      .map(i => `• ${i.name} x${i.qty} — ${fmt(i.price * i.qty)}`)
-      .join("\n")
-    const msg = `Hello Luxiana Beauty! 🌸\n\nI'd like to place an order:\n\n${lines}\n\n*Total: ${fmt(cartTotal)}*\n\nPlease confirm availability and payment details. Thank you!`
-    return `https://wa.me/2347086253922?text=${encodeURIComponent(msg)}`
+  const handleCheckout = () => {
+    closeCart()
+    router.push("/checkout")
   }
 
   return (
@@ -148,32 +146,41 @@ export default function CartDrawer() {
         {/* Footer */}
         {items.length > 0 && (
           <div className="px-7 py-5 border-t border-[#1e1e1e]">
+            {/* Subtotal */}
             <div className="flex justify-between items-center mb-1">
               <span className="text-white/40 text-xs tracking-widest uppercase">
-                Total
+                Subtotal
               </span>
               <span className="text-white text-[22px] font-black">
                 {fmt(cartTotal)}
               </span>
             </div>
-            <p className="text-white/25 text-[11px] mb-5">
-              {cartCount} item{cartCount > 1 ? "s" : ""} · Free delivery on orders above ₦20,000
+            <p className="text-white/25 text-[11px] mb-2">
+              {cartCount} item{cartCount > 1 ? "s" : ""}
             </p>
-            <a
-              href={buildWhatsAppMsg()}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl font-bold text-sm text-white tracking-wide no-underline transition-all hover:opacity-90 hover:scale-[1.01]"
+
+            {/* Delivery note */}
+            <div className="bg-white/3 border border-[#1e1e1e] rounded-xl px-4 py-3 mb-5">
+              <p className="text-white/30 text-[11px] leading-relaxed">
+                🚚 Delivery fee calculated at checkout based on your state
+              </p>
+            </div>
+
+            {/* Checkout button */}
+            <button
+              onClick={handleCheckout}
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl font-bold text-sm text-white tracking-wide cursor-pointer transition-all duration-300 hover:opacity-90 hover:scale-[1.01]"
               style={{
-                background: "linear-gradient(135deg, #128C7E, #25D366)",
-                boxShadow: "0 4px 24px rgba(37,211,102,0.3)",
+                background: "linear-gradient(135deg, #E83D8A, #c0256e)",
+                boxShadow: "0 4px 24px rgba(232,61,138,0.35)",
               }}
             >
-              <FaWhatsapp size={18} />
-              Checkout via WhatsApp
-            </a>
+              Proceed to Checkout
+              <MdArrowForward size={18} />
+            </button>
+
             <p className="text-white/20 text-[10px] text-center mt-3 leading-relaxed">
-              Your full order summary will be sent to Cindy on WhatsApp
+              Bank transfer · Payment verified before shipping
             </p>
           </div>
         )}
