@@ -1,14 +1,8 @@
-import { auth } from "../../../auth"
-import { redirect } from "next/navigation"
-import { adminClient } from "../../../lib/adminSanity"
+import { adminClient } from "@/lib/adminSanity"
 import AdminLayout from "../_components/AdminLayout"
 import DashboardStats from "./_components/DashboardStats"
 
 export default async function DashboardPage() {
-  const session = await auth()
-
-  if (!session) redirect("/admin/login")
-
   const products = await adminClient.fetch(
     `*[_type == "product"] {
       _id, name, price, inStock, featured, category
