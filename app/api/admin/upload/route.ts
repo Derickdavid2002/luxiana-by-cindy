@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@sanity/client"
-
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: "2024-01-01",
-  token: process.env.SANITY_API_TOKEN!,
-  useCdn: false,
-})
+import { adminClient } from "@/lib/adminSanity"
 
 export async function POST(req: Request) {
   try {
@@ -21,18 +13,39 @@ export async function POST(req: Request) {
       )
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer())
+    // Validate file type
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"]
+    if (!validTypes.includes(file.type)) {
+      return NextResponse.json(
+        { error: "Invalid file type. Please upload a JPG, PNG or WebP image." },
+        { status: 400 }
+      )
+    }
 
-    const asset = await client.assets.upload("image", buffer, {
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: "File too large. Maximum size is 10MB." },
+        { status: 400 }
+      )
+    }
+
+    // Convert file to buffer
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    // Upload to Sanity
+    const asset = await adminClient.assets.upload("image", buffer, {
       filename: file.name,
+      contentType: file.type,
     })
 
     return NextResponse.json(asset)
-  } catch (err) {
-    console.error(err)
-
+  } catch (error) {
+    console.error("Upload error:", error)
     return NextResponse.json(
-      { error: "Upload failed" },
+      { error: "Failed to upload image. Please try again." },
       { status: 500 }
     )
   }
