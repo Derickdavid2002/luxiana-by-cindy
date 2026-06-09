@@ -5,87 +5,102 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  MdLock,
-  MdPerson,
-  MdVisibility,
-  MdVisibilityOff,
-  MdLogin,
-  MdError,
-} from "react-icons/md"
+import { MdLock, MdPerson, MdVisibility, MdVisibilityOff } from "react-icons/md"
 
-export default function AdminLogin() {
+export default function LoginPage() {
   const router = useRouter()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
+  const [form, setForm] = useState({ username: "", password: "" })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
-    const result = await signIn("credentials", {
-      username,
-      password,
-      redirect: false,
-    })
-    if (result?.ok) {
-      router.push("/admin/dashboard")
-    } else {
-      setError("Invalid username or password. Please try again.")
+
+    try {
+      const result = await signIn("credentials", {
+        username: form.username,
+        password: form.password,
+        redirect: false,
+      })
+
+      if (result?.ok) {
+        router.push("/admin/dashboard")
+        router.refresh()
+      } else {
+        setError("Invalid username or password")
+      }
+    } catch {
+      setError("Something went wrong. Please try again.")
     }
+
     setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-[#060606] flex items-center justify-center px-4 relative overflow-hidden">
-
-      {/* Background glow effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-[#E83D8A]/5 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] rounded-full bg-[#E83D8A]/3 blur-[80px] pointer-events-none" />
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: "#060606" }}
+    >
+      {/* Glow */}
+      <div
+        className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(232,61,138,0.12) 0%, transparent 70%)",
+          filter: "blur(40px)",
+        }}
+      />
 
       <div className="w-full max-w-sm relative z-10">
 
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#E83D8A]/10 border border-[#E83D8A]/20 mb-5">
-            <MdLock size={28} className="text-[#E83D8A]" />
-          </div>
-          <h1 className="text-xl font-black uppercase tracking-[4px] text-[#E83D8A] mb-1">
-            Luxiana Beauty
+          <h1
+            className="font-black text-[22px] text-[#E83D8A] tracking-[3px] uppercase mb-1"
+            style={{
+              fontFamily: "'Arial Black', sans-serif",
+              textShadow: "0 0 20px rgba(232,61,138,0.5)",
+            }}
+          >
+            LUXIANA BEAUTY
           </h1>
-          <p className="text-[12px] tracking-[3px] text-[#f472b6] italic">
+          <p
+            className="text-[#f472b6] text-[12px] tracking-widest opacity-90 mb-2"
+            style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}
+          >
             by cindy
           </p>
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="h-px w-12 bg-white/10" />
-            <p className="text-[10px] text-white/25 tracking-[3px] uppercase">
-              Admin Panel
-            </p>
-            <div className="h-px w-12 bg-white/10" />
-          </div>
+          <p className="text-white/30 text-[11px] uppercase tracking-[3px]">
+            Admin Dashboard
+          </p>
         </div>
 
         {/* Card */}
-        <div className="bg-[#111111] border border-[#1e1e1e] rounded-2xl p-7">
-          <div className="mb-6">
-            <h2 className="text-lg font-bold text-white tracking-wide">
-              Welcome back
-            </h2>
-            <p className="text-[12px] text-white/30 mt-1">
-              Sign in to manage your store
-            </p>
-          </div>
-
-          {/* Error */}
-          {error && (
-            <div className="mb-5 flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/8 border border-red-500/20">
-              <MdError size={16} className="text-red-400 flex-shrink-0" />
-              <p className="text-red-400 text-[12px] font-medium">{error}</p>
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: "#111111",
+            border: "1px solid #1e1e1e",
+            boxShadow: "0 0 40px rgba(232,61,138,0.06)",
+          }}
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{
+                background: "rgba(232,61,138,0.1)",
+                border: "1px solid rgba(232,61,138,0.2)",
+              }}
+            >
+              <MdLock size={18} className="text-[#E83D8A]" />
             </div>
-          )}
+            <div>
+              <h2 className="text-white font-bold text-[15px]">Sign In</h2>
+              <p className="text-white/30 text-[11px]">Access your admin panel</p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
@@ -101,11 +116,11 @@ export default function AdminLogin() {
                 />
                 <Input
                   type="text"
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
-                  placeholder="Enter your username"
+                  placeholder="Enter username"
+                  value={form.username}
+                  onChange={e => setForm({ ...form, username: e.target.value })}
                   required
-                  className="pl-9 bg-white/5 border-[#1e1e1e] text-white placeholder:text-white/15 focus:border-[#E83D8A]/40 rounded-xl h-11 text-sm"
+                  className="pl-9 bg-white/5 border-[#1e1e1e] text-white placeholder:text-white/15 focus:border-[#E83D8A]/40 rounded-xl h-11"
                 />
               </div>
             </div>
@@ -122,16 +137,16 @@ export default function AdminLogin() {
                 />
                 <Input
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Enter password"
+                  value={form.password}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
                   required
-                  className="pl-9 pr-10 bg-white/5 border-[#1e1e1e] text-white placeholder:text-white/15 focus:border-[#E83D8A]/40 rounded-xl h-11 text-sm"
+                  className="pl-9 pr-10 bg-white/5 border-[#1e1e1e] text-white placeholder:text-white/15 focus:border-[#E83D8A]/40 rounded-xl h-11"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60 transition-colors cursor-pointer"
                 >
                   {showPassword
                     ? <MdVisibilityOff size={16} />
@@ -140,6 +155,19 @@ export default function AdminLogin() {
                 </button>
               </div>
             </div>
+
+            {/* Error */}
+            {error && (
+              <div
+                className="rounded-xl px-4 py-3"
+                style={{
+                  background: "rgba(239,68,68,0.1)",
+                  border: "1px solid rgba(239,68,68,0.2)",
+                }}
+              >
+                <p className="text-red-400 text-[12px] font-semibold">{error}</p>
+              </div>
+            )}
 
             {/* Submit */}
             <Button
@@ -154,7 +182,7 @@ export default function AdminLogin() {
                 </>
               ) : (
                 <>
-                  <MdLogin size={18} />
+                  <MdLock size={16} />
                   Sign In
                 </>
               )}
@@ -162,7 +190,7 @@ export default function AdminLogin() {
           </form>
         </div>
 
-        <p className="text-center text-[11px] text-white/15 mt-6 tracking-wide">
+        <p className="text-center text-white/15 text-[11px] mt-6">
           © 2025 Luxiana Beauty by Cindy
         </p>
       </div>

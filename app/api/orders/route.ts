@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     // ✅ TO CHANGE LATER: Once you have a domain verified in Resend,
     // change `from` to: "Luxiana Beauty <orders@yourdomain.com>"
     await resend.emails.send({
-      from: "Luxiana Beauty <onboarding@resend.dev>",
+      from: "Luxiana Beauty <orders@luxianabeauty.com>",
       to: [customer.email], // ✅ Goes directly to customer's email
       subject: `Order Received — #${orderNumber}`,
       html: orderPlacedTemplate({

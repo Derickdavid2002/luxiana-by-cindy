@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { MdShoppingBag } from "react-icons/md"
 
+
 import { Button } from "@/components/ui/button"
 import {
   MdDashboard,
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { href: "/admin/gold", label: "Gold Collection", icon: MdCollections, section: "manage" },
   { href: "/", label: "View Website", icon: MdLanguage, section: "store" },
   { href: "/admin/settings", label: "Settings", icon: MdSettings, section: "store" },
+  
 ]
 
 const SECTIONS = [

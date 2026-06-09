@@ -91,7 +91,6 @@ export default function GoldGrid({ items }: { items: GoldItem[] }) {
                   {/* Buttons */}
                   <div className="flex gap-3">
 
-                    {/* ✅ FIXED WhatsApp */}
                     <a
                       href={`https://wa.me/2347086253922?text=${encodeURIComponent(
                         `Hello! I'm interested in the *${item.name}* from the Gold Collection. Please provide more details and pricing. Thank you!`
@@ -103,7 +102,6 @@ export default function GoldGrid({ items }: { items: GoldItem[] }) {
                       💬 Enquire
                     </a>
 
-                    {/* ✅ FIXED Instagram */}
                     <a
                       href="https://instagram.com/luxianabeauty"
                       target="_blank"
