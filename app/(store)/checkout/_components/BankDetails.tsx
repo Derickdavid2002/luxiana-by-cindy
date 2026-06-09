@@ -6,8 +6,8 @@ import { MdArrowBack, MdArrowForward, MdContentCopy, MdCheck } from "react-icons
 
 const BANK = {
   bankName: "Opay",
-  accountNumber: "8108682558",
-  accountName: "Derick David",
+  accountNumber: "7086253922",
+  accountName: "Isibor Gloria Cynthia",
 }
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`
@@ -38,7 +38,7 @@ export default function BankDetails({
         Transfer the exact amount to the account below
       </p>
 
-      {/* Amount to pay */}
+      {/* Amount */}
       <div
         className="rounded-2xl p-5 mb-6 text-center"
         style={{

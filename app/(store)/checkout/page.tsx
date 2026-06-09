@@ -159,123 +159,121 @@ export default function CheckoutPage() {
         )}
 
         {/* Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            {step === "details" && (
-              <CheckoutForm
-                formData={formData}
-                setFormData={setFormData}
-                onNext={() => setStep("bank")}
-              />
-            )}
-            {step === "bank" && (
-              <BankDetails
-                total={total}
-                onNext={() => setStep("proof")}
-                onBack={() => setStep("details")}
-              />
-            )}
-            {step === "proof" && (
-              <ProofUpload
-                loading={loading}
-                onSubmit={handleProofSubmit}
-                onBack={() => setStep("bank")}
-              />
-            )}
+      {/* Content */}
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            {/* Success */}
-            {step === "success" && (
-              <div className="bg-[#111111] border border-[#1e1e1e] rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-5">
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center"
-                  style={{
-                    background: "rgba(232,61,138,0.1)",
-                    border: "1px solid rgba(232,61,138,0.3)",
-                    boxShadow: "0 0 40px rgba(232,61,138,0.2)",
-                  }}
-                >
-                  <MdCheckCircle size={40} className="text-[#E83D8A]" />
-                </div>
+  {/* Order summary — shows first on mobile, sidebar on desktop */}
+  {step !== "success" && (
+    <div className="lg:col-span-1 lg:order-2">
+      <OrderSummary
+        items={items}
+        subtotal={subtotal}
+        deliveryFee={deliveryFee}
+        total={total}
+        state={formData.state}
+      />
+    </div>
+  )}
 
-                <div>
-                  <h2 className="text-2xl font-bold text-white mb-2">
-                    Order Placed Successfully!
-                  </h2>
-                  <p className="text-white/40 text-sm leading-relaxed max-w-sm mx-auto">
-                    Thank you! We've received your order and proof of payment.
-                    A confirmation has been sent to your email.
-                  </p>
-                </div>
-
-                <div
-                  className="w-full max-w-xs rounded-2xl p-5 text-center"
-                  style={{
-                    background: "rgba(232,61,138,0.05)",
-                    border: "1px solid rgba(232,61,138,0.2)",
-                  }}
-                >
-                  <p className="text-[11px] text-white/30 uppercase tracking-[3px] mb-2">
-                    Your Order Number
-                  </p>
-                  <p
-                    className="text-[#E83D8A] text-2xl font-black tracking-wider"
-                    style={{ textShadow: "0 0 20px rgba(232,61,138,0.4)" }}
-                  >
-                    #{orderNumber}
-                  </p>
-                  <p className="text-white/20 text-[11px] mt-2">
-                    Save this for reference
-                  </p>
-                </div>
-
-                <div className="w-full bg-white/3 border border-[#1e1e1e] rounded-xl p-4 text-left">
-                  <p className="text-white/40 text-[11px] uppercase tracking-widest font-semibold mb-3">
-                    What happens next?
-                  </p>
-                  <div className="flex flex-col gap-2.5">
-                    {[
-                      "We'll verify your payment within a few hours",
-                      "You'll receive an email once payment is confirmed",
-                      "We'll notify you again when your order ships",
-                    ].map((text, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <div
-                          className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold text-white"
-                          style={{ background: "#E83D8A" }}
-                        >
-                          {i + 1}
-                        </div>
-                        <p className="text-white/40 text-[12px] leading-relaxed">
-                          {text}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => router.push("/shop")}
-                  className="w-full max-w-xs h-12 bg-gradient-to-r from-[#E83D8A] to-[#c0256e] hover:opacity-90 text-white font-bold tracking-[1.5px] uppercase text-sm border-none shadow-[0_0_30px_rgba(232,61,138,0.4)] flex items-center gap-2"
-                >
-                  <MdStorefront size={18} />
-                  Continue Shopping
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {step !== "success" && (
-            <div className="lg:col-span-1">
-              <OrderSummary
-                items={items}
-                subtotal={subtotal}
-                deliveryFee={deliveryFee}
-                total={total}
-                state={formData.state}
-              />
-            </div>
-          )}
+  {/* Main content */}
+  <div className="lg:col-span-2 lg:order-1">
+    {step === "details" && (
+      <CheckoutForm
+        formData={formData}
+        setFormData={setFormData}
+        onNext={() => setStep("bank")}
+      />
+    )}
+    {step === "bank" && (
+      <BankDetails
+        total={total}
+        onNext={() => setStep("proof")}
+        onBack={() => setStep("details")}
+      />
+    )}
+    {step === "proof" && (
+      <ProofUpload
+        loading={loading}
+        onSubmit={handleProofSubmit}
+        onBack={() => setStep("bank")}
+      />
+    )}
+    {step === "success" && (
+      <div className="bg-[#111111] border border-[#1e1e1e] rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-5">
+        <div
+          className="w-20 h-20 rounded-full flex items-center justify-center"
+          style={{
+            background: "rgba(232,61,138,0.1)",
+            border: "1px solid rgba(232,61,138,0.3)",
+            boxShadow: "0 0 40px rgba(232,61,138,0.2)",
+          }}
+        >
+          <MdCheckCircle size={40} className="text-[#E83D8A]" />
         </div>
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Order Placed Successfully!
+          </h2>
+          <p className="text-white/40 text-sm leading-relaxed max-w-sm mx-auto">
+            Thank you! We've received your order and proof of payment.
+            A confirmation has been sent to your email.
+          </p>
+        </div>
+        <div
+          className="w-full max-w-xs rounded-2xl p-5 text-center"
+          style={{
+            background: "rgba(232,61,138,0.05)",
+            border: "1px solid rgba(232,61,138,0.2)",
+          }}
+        >
+          <p className="text-[11px] text-white/30 uppercase tracking-[3px] mb-2">
+            Your Order Number
+          </p>
+          <p
+            className="text-[#E83D8A] text-2xl font-black tracking-wider"
+            style={{ textShadow: "0 0 20px rgba(232,61,138,0.4)" }}
+          >
+            #{orderNumber}
+          </p>
+          <p className="text-white/20 text-[11px] mt-2">
+            Save this for reference
+          </p>
+        </div>
+        <div className="w-full bg-white/3 border border-[#1e1e1e] rounded-xl p-4 text-left">
+          <p className="text-white/40 text-[11px] uppercase tracking-widest font-semibold mb-3">
+            What happens next?
+          </p>
+          <div className="flex flex-col gap-2.5">
+            {[
+              "We'll verify your payment within a few hours",
+              "You'll receive an email once payment is confirmed",
+              "We'll notify you again when your order ships",
+            ].map((text, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold text-white"
+                  style={{ background: "#E83D8A" }}
+                >
+                  {i + 1}
+                </div>
+                <p className="text-white/40 text-[12px] leading-relaxed">
+                  {text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Button
+          onClick={() => router.push("/shop")}
+          className="w-full max-w-xs h-12 bg-gradient-to-r from-[#E83D8A] to-[#c0256e] hover:opacity-90 text-white font-bold tracking-[1.5px] uppercase text-sm border-none shadow-[0_0_30px_rgba(232,61,138,0.4)] flex items-center gap-2"
+        >
+          <MdStorefront size={18} />
+          Continue Shopping
+        </Button>
+      </div>
+    )}
+  </div>
+</div>
       </div>
     </div>
   )

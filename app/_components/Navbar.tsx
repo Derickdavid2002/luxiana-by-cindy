@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { useCartStore } from "../store/cartStore"
 import { HiOutlineShoppingBag } from "react-icons/hi2"
 import { RxHamburgerMenu, RxCross2 } from "react-icons/rx"
-import { FaWhatsapp, FaInstagram, FaTiktok } from "react-icons/fa"
+import { FaWhatsapp, FaInstagram, FaTiktok, FaSnapchat } from "react-icons/fa"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -21,9 +21,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
+  useEffect(() => { setMenuOpen(false) }, [pathname])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : ""
@@ -38,9 +36,10 @@ export default function Navbar() {
   ]
 
   const socials = [
-    { href: "https://wa.me/2347086253922", icon: FaWhatsapp, label: "WhatsApp", hoverColor: "hover:text-[#25D366]" },
-    { href: "https://instagram.com/luxianabeauty", icon: FaInstagram, label: "Instagram", hoverColor: "hover:text-[#E1306C]" },
-    { href: "https://tiktok.com/@luxianabeauty", icon: FaTiktok, label: "TikTok", hoverColor: "hover:text-[#69C9D0]" },
+    { href: "https://wa.me/2348081859922", icon: FaWhatsapp, label: "WhatsApp", hoverColor: "hover:text-[#25D366]" },
+    { href: "https://instagram.com/Luxiana_Beauty", icon: FaInstagram, label: "Instagram", hoverColor: "hover:text-[#E1306C]" },
+    { href: "https://tiktok.com/@Luxiana_Beauty", icon: FaTiktok, label: "TikTok", hoverColor: "hover:text-[#69C9D0]" },
+    { href: "https://snapchat.com/add/Sweeetcin", icon: FaSnapchat, label: "Snapchat", hoverColor: "hover:text-[#FFFC00]" },
   ]
 
   return (
@@ -60,7 +59,7 @@ export default function Navbar() {
               className="font-black text-[18px] text-[#E83D8A] tracking-[3px] uppercase"
               style={{
                 fontFamily: "'Arial Black', sans-serif",
-                textShadow: "0 0 20px rgba(232,61,138,0.5), 0 0 40px rgba(232,61,138,0.2)",
+                textShadow: "0 0 20px rgba(232,61,138,0.5)",
               }}
             >
               LUXIANA BEAUTY
@@ -73,7 +72,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Links + Socials + Cart */}
+          {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-9">
             {links.map(({ href, label }) => {
               const active = pathname === href
@@ -81,18 +80,22 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
-                  className={`relative text-[11px] font-medium tracking-[2px] uppercase no-underline transition-all duration-200 ${
-                    active ? "text-[#E83D8A]" : "text-white/50 hover:text-white/80"
-                  }`}
-                  style={{ textShadow: active ? "0 0 12px rgba(232,61,138,0.6)" : "none" }}
+                  className="relative text-[11px] font-medium tracking-[2px] uppercase no-underline transition-all duration-200 pb-1"
+                  style={{
+                    color: active ? "#E83D8A" : "rgba(255,255,255,0.5)",
+                    textShadow: active ? "0 0 12px rgba(232,61,138,0.6)" : "none",
+                  }}
                 >
                   {label}
-                  {active && (
-                    <span
-                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E83D8A] block"
-                      style={{ boxShadow: "0 0 8px #E83D8A" }}
-                    />
-                  )}
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full transition-all duration-300"
+                    style={{
+                      background: "#E83D8A",
+                      boxShadow: "0 0 8px #E83D8A",
+                      opacity: active ? 1 : 0,
+                      transform: active ? "scaleX(1)" : "scaleX(0)",
+                    }}
+                  />
                 </Link>
               )
             })}
@@ -113,7 +116,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Cart button */}
+            {/* Cart */}
             <button
               onClick={openCart}
               className={`relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
@@ -163,7 +166,6 @@ export default function Navbar() {
                 </span>
               )}
             </button>
-
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="w-10 h-10 flex items-center justify-center bg-white/5 border border-[#1e1e1e] rounded-xl cursor-pointer text-white/60 hover:text-white transition-colors"
@@ -198,15 +200,21 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center justify-between py-4 border-b border-[#1e1e1e] text-[13px] font-semibold tracking-[2px] uppercase no-underline transition-colors ${
-                  active ? "text-[#E83D8A]" : "text-white/40 hover:text-white/70"
-                }`}
+                className="flex items-center justify-between py-4 no-underline transition-colors"
+                style={{
+                  color: active ? "#E83D8A" : "rgba(255,255,255,0.4)",
+                  borderBottom: "1px solid #1e1e1e",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                }}
               >
                 {label}
                 {active && (
                   <span
-                    className="w-1.5 h-1.5 rounded-full bg-[#E83D8A]"
-                    style={{ boxShadow: "0 0 8px #E83D8A" }}
+                    className="w-8 h-[2px] rounded-full"
+                    style={{ background: "#E83D8A", boxShadow: "0 0 8px #E83D8A" }}
                   />
                 )}
               </Link>
@@ -214,7 +222,7 @@ export default function Navbar() {
           })}
 
           {/* Mobile socials */}
-          <div className="flex gap-6 pt-5 pb-2">
+          <div className="flex gap-5 pt-5 pb-2 flex-wrap">
             {socials.map(({ href, icon: Icon, label, hoverColor }) => (
               <a
                 key={label}
