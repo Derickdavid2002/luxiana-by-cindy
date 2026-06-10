@@ -34,7 +34,7 @@ export default function SettingsClient() {
   const storeInfo = [
     { icon: MdStore, label: "Store Name", value: "Luxiana Beauty by Cindy" },
     { icon: MdPerson, label: "Owner", value: "Isibor Gloria Cynthia" },
-    { icon: MdEmail, label: "Admin Email", value: "Cindyisibor40@icloud.com" },
+    { icon: MdEmail, label: "Admin Email", value: "cynthiaisibor40@gmail.com" },
     { icon: MdPhone, label: "WhatsApp", value: "+234 808 185 9922" },
   ]
 
