@@ -100,13 +100,15 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(_req: Request) {
   try {
     const orders = await adminClient.fetch(
       `*[_type == "order"] | order(createdAt desc) {
         _id, orderNumber, status, customer, delivery,
         items, subtotal, total, createdAt
-      }`
+      }`,
+      {},
+      { cache: "no-store" }
     )
     return NextResponse.json(orders)
   } catch {

@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   MdSearch,
   MdShoppingBag,
@@ -12,8 +13,11 @@ import {
   MdLocalShipping,
   MdDoneAll,
   MdCancel,
+  MdWarning,
+  MdRefresh,
 } from "react-icons/md"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const STATUS_STYLES: Record<string, string> = {
   pending: "text-amber-400 bg-amber-500/10 border-amber-500/25",
@@ -22,6 +26,7 @@ const STATUS_STYLES: Record<string, string> = {
   shipped: "text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
   delivered: "text-green-400 bg-green-500/10 border-green-500/25",
   cancelled: "text-red-400 bg-red-500/10 border-red-500/25",
+  rejected: "text-orange-400 bg-orange-500/10 border-orange-500/25",
 }
 
 const STATUS_ICONS: Record<string, any> = {
@@ -31,6 +36,7 @@ const STATUS_ICONS: Record<string, any> = {
   shipped: MdLocalShipping,
   delivered: MdDoneAll,
   cancelled: MdCancel,
+  rejected: MdWarning,
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -40,14 +46,45 @@ const STATUS_LABELS: Record<string, string> = {
   shipped: "Shipped",
   delivered: "Delivered",
   cancelled: "Cancelled",
+  rejected: "Rejected",
 }
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`
 
 export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
-  const [orders] = useState(initialOrders)
+  const router = useRouter()
+  const [orders, setOrders] = useState(initialOrders)
   const [search, setSearch] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
+  const [lastRefresh, setLastRefresh] = useState(new Date())
+  const [refreshing, setRefreshing] = useState(false)
+
+  const pendingCount = orders.filter(o => o.status === "pending").length
+
+  const fetchOrders = useCallback(async (silent = false) => {
+    if (!silent) setRefreshing(true)
+    try {
+      const res = await fetch("/api/orders?admin=true", {
+        cache: "no-store",
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setOrders(data)
+        setLastRefresh(new Date())
+      }
+    } catch (err) {
+      console.error("Failed to refresh orders:", err)
+    }
+    if (!silent) setRefreshing(false)
+  }, [])
+
+  // Auto refresh every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchOrders(true)
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [fetchOrders])
 
   const filtered = orders.filter(o => {
     const matchSearch =
@@ -63,17 +100,59 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
     <div className="py-4 flex flex-col gap-4">
 
       {/* Header */}
-      <div>
-        <p className="text-[11px] uppercase tracking-[4px] text-[#E83D8A] mb-1.5 font-semibold">
-          Manage
-        </p>
-        <h1 className="text-2xl font-bold text-white tracking-wide">
-          Orders
-        </h1>
-        <p className="text-sm text-white/30 mt-0.5">
-          {orders.length} total orders
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-[11px] uppercase tracking-[4px] text-[#E83D8A] mb-1.5 font-semibold">
+            Manage
+          </p>
+          <h1 className="text-2xl font-bold text-white tracking-wide">
+            Orders
+          </h1>
+          <p className="text-sm text-white/30 mt-0.5">
+            {orders.length} total · {pendingCount} pending
+          </p>
+        </div>
+
+        {/* Refresh button */}
+        <Button
+          onClick={() => fetchOrders(false)}
+          disabled={refreshing}
+          variant="outline"
+          size="sm"
+          className="border-[#1e1e1e] bg-white/5 text-white/40 hover:text-white hover:border-white/20 flex items-center gap-2"
+        >
+          <MdRefresh
+            size={15}
+            className={refreshing ? "animate-spin" : ""}
+          />
+          {refreshing ? "Refreshing..." : "Refresh"}
+        </Button>
       </div>
+
+      {/* Last refresh time */}
+      <p className="text-[10px] text-white/20 -mt-2">
+        Last updated: {lastRefresh.toLocaleTimeString("en-NG", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })}
+      </p>
+
+      {/* Pending alert */}
+      {pendingCount > 0 && (
+        <div
+          className="flex items-center gap-3 p-3 rounded-xl"
+          style={{
+            background: "rgba(245,158,11,0.08)",
+            border: "1px solid rgba(245,158,11,0.2)",
+          }}
+        >
+          <MdPending size={16} className="text-amber-400 flex-shrink-0" />
+          <p className="text-amber-400 text-[12px] font-semibold">
+            {pendingCount} order{pendingCount > 1 ? "s" : ""} waiting for payment verification
+          </p>
+        </div>
+      )}
 
       {/* Search */}
       <div className="relative">
@@ -96,13 +175,37 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
           <button
             key={s}
             onClick={() => setFilterStatus(s)}
-            className={`px-3 py-1.5 rounded-full text-[10px] font-semibold tracking-wide uppercase transition-all cursor-pointer border ${
-              filterStatus === s
-                ? "bg-[#E83D8A]/15 border-[#E83D8A]/35 text-[#E83D8A]"
-                : "bg-white/5 border-[#1e1e1e] text-white/40 hover:text-white/60"
-            }`}
+            className="px-3 py-1.5 rounded-full text-[10px] font-semibold tracking-wide uppercase transition-all cursor-pointer border relative"
+            style={{
+              background:
+                filterStatus === s
+                  ? "rgba(232,61,138,0.15)"
+                  : "rgba(255,255,255,0.05)",
+              borderColor:
+                filterStatus === s
+                  ? "rgba(232,61,138,0.35)"
+                  : "#1e1e1e",
+              color:
+                filterStatus === s
+                  ? "#E83D8A"
+                  : "rgba(255,255,255,0.4)",
+            }}
           >
             {s === "all" ? "All" : STATUS_LABELS[s]}
+            {/* Count badge */}
+            {s !== "all" && orders.filter(o => o.status === s).length > 0 && (
+              <span
+                className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full text-[9px] font-black flex items-center justify-center text-white"
+                style={{
+                  background: s === "pending" ? "#f59e0b" : "#E83D8A",
+                  boxShadow: s === "pending"
+                    ? "0 0 6px rgba(245,158,11,0.5)"
+                    : "0 0 6px rgba(232,61,138,0.5)",
+                }}
+              >
+                {orders.filter(o => o.status === s).length}
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -117,7 +220,13 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
       {/* Empty state */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-white/5 border border-[#1e1e1e] flex items-center justify-center">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid #1e1e1e",
+            }}
+          >
             <MdShoppingBag size={24} className="text-white/20" />
           </div>
           <div className="text-center">
@@ -145,12 +254,22 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
 
             return (
               <Link key={order._id} href={`/admin/orders/${order._id}`}>
-                <div className="bg-[#111111] border border-[#1e1e1e] rounded-2xl p-4 hover:border-[#E83D8A]/20 transition-all duration-200 group">
+                <div
+                  className="rounded-2xl p-4 transition-all duration-200 group"
+                  style={{
+                    background: "#111111",
+                    border: order.status === "pending"
+                      ? "1px solid rgba(245,158,11,0.2)"
+                      : "1px solid #1e1e1e",
+                  }}
+                >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      {/* Order number + status */}
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <p className="text-[#E83D8A] text-sm font-black tracking-wide">
+                        <p
+                          className="text-sm font-black tracking-wide"
+                          style={{ color: "#E83D8A" }}
+                        >
                           #{order.orderNumber}
                         </p>
                         <span
@@ -160,16 +279,12 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
                           {STATUS_LABELS[order.status]}
                         </span>
                       </div>
-
-                      {/* Customer */}
                       <p className="text-white text-[13px] font-semibold truncate">
                         {order.customer?.name}
                       </p>
                       <p className="text-white/30 text-[11px] truncate">
                         {order.customer?.email}
                       </p>
-
-                      {/* Meta */}
                       <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                         <p className="text-white/25 text-[10px]">{date}</p>
                         <span className="text-white/15 text-[10px]">·</span>
@@ -183,10 +298,11 @@ export default function OrderList({ initialOrders }: { initialOrders: any[] }) {
                         </p>
                       </div>
                     </div>
-
-                    {/* Amount + arrow */}
                     <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                      <p className="text-[#E83D8A] font-black text-[14px]">
+                      <p
+                        className="font-black text-[14px]"
+                        style={{ color: "#E83D8A" }}
+                      >
                         {fmt(order.total)}
                       </p>
                       <MdArrowForward

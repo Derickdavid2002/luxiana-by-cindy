@@ -68,7 +68,7 @@ export default function SettingsClient() {
       </div>
 
       {/* Info banner */}
-      <div
+      {/* <div
         className="flex items-start gap-3 p-4 rounded-xl"
         style={{
           background: "rgba(59,130,246,0.08)",
@@ -81,7 +81,7 @@ export default function SettingsClient() {
           Vercel environment variables and redeploy. Contact your developer
           for code changes.
         </p>
-      </div>
+      </div> */}
 
       {/* Store info */}
       <div

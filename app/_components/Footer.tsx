@@ -60,7 +60,7 @@ export default function Footer() {
           </div>
 
           {/* Navigate */}
-          <div>
+          {/* <div>
             <p className="text-[11px] uppercase tracking-[3px] mb-5 font-semibold text-[#E83D8A]">
               Navigate
             </p>
@@ -75,7 +75,7 @@ export default function Footer() {
                 </Link>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Contact */}
           <div>
