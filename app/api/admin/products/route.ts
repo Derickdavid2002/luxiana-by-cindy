@@ -13,6 +13,8 @@ export async function POST(req: Request) {
     // Revalidate so new product shows immediately on website
     revalidatePath("/")
     revalidatePath("/shop")
+    revalidatePath("/admin/products") 
+
 
     return NextResponse.json(product)
   } catch {
