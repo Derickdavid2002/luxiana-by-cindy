@@ -7,6 +7,8 @@ import { urlFor } from "../../../../lib/sanity"
 import { GoldItem } from "../../../types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import ConfirmModal from "../../_components/ConfirmModal"
+
 import {
   MdAdd,
   MdEdit,
@@ -25,17 +27,24 @@ export default function GoldList({ initialItems }: { initialItems: GoldItem[] })
     item.name?.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this gold item?")) return
-    setDeleting(id)
-    try {
-      await fetch(`/api/admin/gold/${id}`, { method: "DELETE" })
-      setItems(prev => prev.filter(i => i._id !== id))
-    } catch {
-      alert("Failed to delete item")
-    }
-    setDeleting(null)
+  const [confirmModal, setConfirmModal] = useState<{
+  open: boolean
+  itemId: string
+  itemName: string
+}>({ open: false, itemId: "", itemName: "" })
+
+ const handleDelete = async () => {
+  const { itemId } = confirmModal
+  setDeleting(itemId)
+  try {
+    await fetch(`/api/admin/gold/${itemId}`, { method: "DELETE" })
+    setItems(prev => prev.filter(i => i._id !== itemId))
+    setConfirmModal({ open: false, itemId: "", itemName: "" })
+  } catch {
+    setConfirmModal({ open: false, itemId: "", itemName: "" })
   }
+  setDeleting(null)
+}
 
   return (
     <div className="py-6 flex flex-col gap-5">
@@ -173,7 +182,7 @@ export default function GoldList({ initialItems }: { initialItems: GoldItem[] })
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDelete(item._id)}
+                 onClick={() => setConfirmModal({ open: true, itemId: item._id, itemName: item.name })}
                   disabled={deleting === item._id}
                   className="w-full border-red-500/20 bg-red-500/5 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 text-xs font-bold tracking-wide flex items-center gap-1.5 disabled:opacity-50"
                 >
@@ -189,6 +198,19 @@ export default function GoldList({ initialItems }: { initialItems: GoldItem[] })
           ))}
         </div>
       )}
+
+
+      <ConfirmModal
+  isOpen={confirmModal.open}
+  title="Delete Gold Item"
+  message={`Are you sure you want to delete "${confirmModal.itemName}"? This cannot be undone.`}
+  confirmLabel="Yes, Delete"
+  cancelLabel="Keep It"
+  variant="danger"
+  loading={deleting === confirmModal.itemId}
+  onConfirm={handleDelete}
+  onCancel={() => setConfirmModal({ open: false, itemId: "", itemName: "" })}
+/>
     </div>
   )
 }

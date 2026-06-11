@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { adminClient } from "../../../../../lib/adminSanity"
+import { revalidatePath } from "next/cache"
 
 export async function PATCH(
   req: Request,
@@ -9,9 +10,13 @@ export async function PATCH(
     const { id } = await params
     const body = await req.json()
     const item = await adminClient.patch(id).set(body).commit()
+    revalidatePath("/gold")
     return NextResponse.json(item)
   } catch {
-    return NextResponse.json({ error: "Failed to update gold item" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to update gold item" },
+      { status: 500 }
+    )
   }
 }
 
@@ -22,8 +27,13 @@ export async function DELETE(
   try {
     const { id } = await params
     await adminClient.delete(id)
+    revalidatePath("/gold")
     return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ error: "Failed to delete gold item" }, { status: 500 })
+  } catch (error) {
+    console.error("Delete error:", error)
+    return NextResponse.json(
+      { error: "Failed to delete gold item" },
+      { status: 500 }
+    )
   }
 }

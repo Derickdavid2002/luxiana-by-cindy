@@ -38,7 +38,7 @@ export default function Navbar() {
   const socials = [
     { href: "https://wa.me/2348081859922", icon: FaWhatsapp, label: "WhatsApp", hoverColor: "hover:text-[#25D366]" },
     { href: "https://instagram.com/Luxiana_Beauty", icon: FaInstagram, label: "Instagram", hoverColor: "hover:text-[#E1306C]" },
-    { href: "https://tiktok.com/@Luxiana_Beauty", icon: FaTiktok, label: "TikTok", hoverColor: "hover:text-[#69C9D0]" },
+    { href: "https://www.tiktok.com/@Luxiana_Beauty", icon: FaTiktok, label: "TikTok", hoverColor: "hover:text-[#69C9D0]" },
     { href: "https://snapchat.com/add/Sweeetcin", icon: FaSnapchat, label: "Snapchat", hoverColor: "hover:text-[#FFFC00]" },
   ]
 

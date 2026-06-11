@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     // Send new order alert to admin (Cindy)
     // ✅ TO CHANGE LATER: Change ADMIN_EMAIL in .env.local to Cindy's real email
     await resend.emails.send({
-      from: "Luxiana Beauty <onboarding@resend.dev>",
+      from: "Luxiana Beauty <orders@luxianabeauty.com>",
       to: [ADMIN_EMAIL],
       subject: `🛍 New Order — #${orderNumber}`,
       html: newOrderAlertTemplate({

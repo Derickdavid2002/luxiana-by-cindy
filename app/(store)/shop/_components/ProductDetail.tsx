@@ -6,13 +6,19 @@ import { useState } from "react"
 import { useCartStore } from "../../../store/cartStore"
 import { urlFor } from "@/lib/sanity"
 import { Product } from "../../../types"
+import { FaWhatsapp } from "react-icons/fa"
+import { MdShoppingCart, MdCheck } from "react-icons/md"
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`
+
+const ENQUIRY_ONLY = ["Gold", "Diamonds"]
 
 export default function ProductDetail({ product }: { product: Product }) {
   const [added, setAdded] = useState(false)
   const [qty, setQty] = useState(1)
   const addItem = useCartStore(state => state.addItem)
+
+  const isEnquiryOnly = ENQUIRY_ONLY.includes(product.category)
 
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
@@ -29,14 +35,18 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <div className="w-full min-h-screen bg-dark">
+    <div className="w-full min-h-screen bg-[#060606]">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 py-16">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-12 text-sm text-white/30">
-          <Link href="/" className="hover:text-pink-DEFAULT">Home</Link>
+          <Link href="/" className="hover:text-[#E83D8A] transition-colors">
+            Home
+          </Link>
           <span>/</span>
-          <Link href="/shop" className="hover:text-pink-DEFAULT">Shop</Link>
+          <Link href="/shop" className="hover:text-[#E83D8A] transition-colors">
+            Shop
+          </Link>
           <span>/</span>
           <span className="text-white/60">{product.name}</span>
         </div>
@@ -45,22 +55,51 @@ export default function ProductDetail({ product }: { product: Product }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 
           {/* Image */}
-          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-dark-border">
-            <Image
-              src={urlFor(product.image).width(800).height(800).url()}
-              alt={product.name}
-              fill
-              className="object-cover"
-              priority
-            />
+          <div
+            className="relative w-full aspect-square rounded-2xl overflow-hidden"
+            style={{ border: "1px solid #1e1e1e" }}
+          >
+            {product.image && (
+              <Image
+                src={urlFor(product.image).width(800).height(800).url()}
+                alt={product.name}
+                fill
+                className="object-cover"
+                priority
+              />
+            )}
 
-            {/* Category */}
-            <span className="absolute top-4 left-4 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-pink/40 bg-pink/10 text-pink-DEFAULT backdrop-blur-sm">
+            {/* Category badge */}
+            <span
+              className="absolute top-4 left-4 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest backdrop-blur-sm"
+              style={{
+                border: "1px solid rgba(232,61,138,0.4)",
+                background: "rgba(232,61,138,0.1)",
+                color: "#E83D8A",
+              }}
+            >
               {product.category}
             </span>
 
+            {/* Enquiry only badge */}
+            {isEnquiryOnly && (
+              <span
+                className="absolute top-4 right-4 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest backdrop-blur-sm"
+                style={{
+                  border: "1px solid rgba(37,211,102,0.4)",
+                  background: "rgba(37,211,102,0.1)",
+                  color: "#25D366",
+                }}
+              >
+                Enquiry Only
+              </span>
+            )}
+
             {!product.inStock && (
-              <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+              <div
+                className="absolute inset-0 flex items-center justify-center"
+                style={{ background: "rgba(0,0,0,0.7)" }}
+              >
                 <span className="text-white/60 text-lg font-bold uppercase tracking-widest">
                   Out of Stock
                 </span>
@@ -71,23 +110,41 @@ export default function ProductDetail({ product }: { product: Product }) {
           {/* Info */}
           <div className="flex flex-col gap-6">
 
-            {/* Title */}
+            {/* Title + Price */}
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 {product.name}
               </h1>
-
-              <div className="flex items-center gap-3">
-                <span className="text-3xl font-black text-pink-DEFAULT drop-shadow-[0_0_10px_rgba(232,61,138,0.5)]">
+              <div className="flex items-center gap-3 flex-wrap">
+                <span
+                  className="text-3xl font-black"
+                  style={{
+                    color: "#E83D8A",
+                    textShadow: "0 0 20px rgba(232,61,138,0.4)",
+                  }}
+                >
                   {fmt(product.price)}
                 </span>
-
                 {product.inStock ? (
-                  <span className="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest bg-green-500/10 text-green-400 border border-green-500/20">
+                  <span
+                    className="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"
+                    style={{
+                      background: "rgba(34,197,94,0.1)",
+                      color: "#22c55e",
+                      border: "1px solid rgba(34,197,94,0.2)",
+                    }}
+                  >
                     In Stock
                   </span>
                 ) : (
-                  <span className="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest bg-white/5 text-white/30 border border-dark-border">
+                  <span
+                    className="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"
+                    style={{
+                      background: "rgba(255,255,255,0.05)",
+                      color: "rgba(255,255,255,0.3)",
+                      border: "1px solid #1e1e1e",
+                    }}
+                  >
                     Out of Stock
                   </span>
                 )}
@@ -95,7 +152,13 @@ export default function ProductDetail({ product }: { product: Product }) {
             </div>
 
             {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-pink/30 to-transparent" />
+            <div
+              className="h-px"
+              style={{
+                background:
+                  "linear-gradient(to right, rgba(232,61,138,0.3), transparent)",
+              }}
+            />
 
             {/* Description */}
             <p className="text-base leading-relaxed text-white/60">
@@ -103,62 +166,147 @@ export default function ProductDetail({ product }: { product: Product }) {
             </p>
 
             {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-pink/30 to-transparent" />
+            <div
+              className="h-px"
+              style={{
+                background:
+                  "linear-gradient(to right, rgba(232,61,138,0.3), transparent)",
+              }}
+            />
 
             {/* Actions */}
             {product.inStock && (
               <div className="flex flex-col gap-4">
 
-                {/* Qty */}
-                <div className="flex items-center gap-4">
-                  <span className="text-xs uppercase tracking-widest text-white/50">
-                    Qty
-                  </span>
-
-                  <div className="flex items-center gap-3 p-1 rounded-xl border border-dark-border bg-white/5">
-                    <button
-                      onClick={() => setQty(q => Math.max(1, q - 1))}
-                      className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 border border-dark-border hover:bg-pink/10 hover:text-pink-DEFAULT"
+                {isEnquiryOnly ? (
+                  /* ENQUIRY ONLY — Gold & Diamonds */
+                  <div className="flex flex-col gap-3">
+                    <div
+                      className="rounded-xl p-4"
+                      style={{
+                        background: "rgba(37,211,102,0.05)",
+                        border: "1px solid rgba(37,211,102,0.15)",
+                      }}
                     >
-                      −
-                    </button>
-
-                    <span className="text-white font-bold min-w-[28px] text-center">
-                      {qty}
-                    </span>
-
-                    <button
-                      onClick={() => setQty(q => q + 1)}
-                      className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 border border-dark-border hover:bg-pink/10 hover:text-pink-DEFAULT"
+                      <p className="text-[12px] text-white/40 leading-relaxed">
+                        This is a premium item available by enquiry only.
+                        Contact us on WhatsApp for pricing, availability and
+                        more details.
+                      </p>
+                    </div>
+<a
+                    
+                      href={`https://wa.me/2348081859922?text=${encodeURIComponent(
+                        `Hello! I'm interested in *${product.name}* from the ${product.category} collection. Please provide more details and pricing. Thank you!`
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full py-5 rounded-xl font-bold text-sm uppercase tracking-[2px] flex items-center justify-center gap-3 text-white no-underline transition-all duration-300 hover:scale-[1.02] hover:opacity-90"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #128C7E, #25D366)",
+                        boxShadow: "0 4px 24px rgba(37,211,102,0.35)",
+                      }}
                     >
-                      +
-                    </button>
+                      <FaWhatsapp size={18} />
+                      Enquire on WhatsApp
+                    </a>
+
+                    <a
+                      href="https://instagram.com/Luxiana_Beauty"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[2px] flex items-center justify-center gap-3 text-white/60 no-underline transition-all duration-300 hover:text-white"
+                      style={{
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid #1e1e1e",
+                      }}
+                    >
+                      Or DM us on Instagram
+                    </a>
                   </div>
-                </div>
+                ) : (
+                  /* NORMAL — Skincare & Watches */
+                  <>
+                    {/* Qty */}
+                    <div className="flex items-center gap-4">
+                      <span className="text-xs uppercase tracking-widest text-white/50">
+                        Qty
+                      </span>
+                      <div
+                        className="flex items-center gap-3 p-1 rounded-xl"
+                        style={{ border: "1px solid #1e1e1e", background: "rgba(255,255,255,0.05)" }}
+                      >
+                        <button
+                          onClick={() => setQty(q => Math.max(1, q - 1))}
+                          className="w-9 h-9 flex items-center justify-center rounded-lg text-white/60 hover:text-white transition-colors cursor-pointer"
+                          style={{
+                            background: "rgba(255,255,255,0.05)",
+                            border: "1px solid #1e1e1e",
+                          }}
+                        >
+                          −
+                        </button>
+                        <span className="text-white font-bold min-w-[28px] text-center">
+                          {qty}
+                        </span>
+                        <button
+                          onClick={() => setQty(q => q + 1)}
+                          className="w-9 h-9 flex items-center justify-center rounded-lg text-white/60 hover:text-white transition-colors cursor-pointer"
+                          style={{
+                            background: "rgba(255,255,255,0.05)",
+                            border: "1px solid #1e1e1e",
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
 
-                {/* Add to cart */}
-                <button
-                  onClick={handleAddToCart}
-                  className={`w-full py-5 rounded-xl font-bold text-sm uppercase tracking-[2px] text-white transition-all duration-300 hover:scale-[1.02]
-                  ${added 
-                    ? "bg-green-700 shadow-[0_4px_24px_rgba(26,92,42,0.4)]" 
-                    : "bg-gradient-to-r from-pink-DEFAULT to-pink-700 shadow-[0_0_40px_rgba(232,61,138,0.4)]"
-                  }`}
-                >
-                  {added ? "✓ Added to Cart!" : `Add ${qty > 1 ? `${qty} items` : ""} to Cart`}
-                </button>
+                    {/* Add to cart */}
+                    <button
+                      onClick={handleAddToCart}
+                      className="w-full py-5 rounded-xl font-bold text-sm uppercase tracking-[2px] text-white transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer"
+                      style={{
+                        background: added
+                          ? "linear-gradient(135deg, #166534, #15803d)"
+                          : "linear-gradient(135deg, #E83D8A, #c0256e)",
+                        boxShadow: added
+                          ? "0 4px 24px rgba(22,101,52,0.4)"
+                          : "0 0 40px rgba(232,61,138,0.4)",
+                      }}
+                    >
+                      {added ? (
+                        <>
+                          <MdCheck size={18} />
+                          Added to Cart!
+                        </>
+                      ) : (
+                        <>
+                          <MdShoppingCart size={18} />
+                          Add {qty > 1 ? `${qty} items` : ""} to Cart
+                        </>
+                      )}
+                    </button>
 
-                {/* ✅ FIXED WhatsApp */}
-                <a
-                  href={`https://wa.me/2347086253922?text=${encodeURIComponent(
-                    `Hello! I'd like to order *${product.name}* x${qty} — ${fmt(product.price * qty)}. Please confirm availability. Thank you!`
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[2px] flex items-center justify-center gap-3 border border-green-400/30 bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-all duration-300 hover:scale-[1.02]"
-                >
-                  💬 Order via WhatsApp
-                </a>
+                    {/* WhatsApp order */}
+                    <a
+                      href={`https://wa.me/2348081859922?text=${encodeURIComponent(
+                        `Hello! I'd like to order *${product.name}* x${qty} — ${fmt(product.price * qty)}. Please confirm availability. Thank you!`
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[2px] flex items-center justify-center gap-3 text-white/60 no-underline transition-all duration-300 hover:text-white"
+                      style={{
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid #1e1e1e",
+                      }}
+                    >
+                      <FaWhatsapp size={16} />
+                      Order via WhatsApp
+                    </a>
+                  </>
+                )}
               </div>
             )}
 
@@ -167,7 +315,8 @@ export default function ProductDetail({ product }: { product: Product }) {
               {["Premium Quality", "Fast Delivery", "100% Authentic"].map(tag => (
                 <span
                   key={tag}
-                  className="text-[11px] px-3 py-1.5 rounded-full border border-dark-border text-white/40"
+                  className="text-[11px] px-3 py-1.5 rounded-full text-white/40"
+                  style={{ border: "1px solid #1e1e1e" }}
                 >
                   ✓ {tag}
                 </span>
@@ -180,7 +329,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         <div className="mt-16">
           <Link
             href="/shop"
-            className="text-sm text-white/40 hover:text-pink-DEFAULT"
+            className="text-sm text-white/40 hover:text-[#E83D8A] transition-colors"
           >
             ← Back to Shop
           </Link>

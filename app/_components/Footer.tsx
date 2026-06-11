@@ -60,7 +60,7 @@ export default function Footer() {
           </div>
 
           {/* Navigate */}
-          {/* <div>
+          <div className="hidden md:block">
             <p className="text-[11px] uppercase tracking-[3px] mb-5 font-semibold text-[#E83D8A]">
               Navigate
             </p>
@@ -75,7 +75,7 @@ export default function Footer() {
                 </Link>
               ))}
             </div>
-          </div> */}
+          </div>
 
           {/* Contact */}
           <div>
@@ -102,7 +102,7 @@ export default function Footer() {
                 Instagram
               </a>
               <a
-                href="https://tiktok.com/@Luxiana_Beauty"
+                href="https://www.tiktok.com/@Luxiana_Beauty"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-2 text-sm text-white/35 hover:text-[#69C9D0] transition-colors duration-200 w-fit no-underline"
@@ -148,7 +148,7 @@ export default function Footer() {
               href="/admin"
               className="text-[11px] text-white/10 hover:text-white/30 transition-colors tracking-widest uppercase no-underline"
             >
-              Admin
+              Cindy
             </Link>
           </div>
         </div>

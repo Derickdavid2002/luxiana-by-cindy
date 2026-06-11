@@ -1,5 +1,27 @@
 import { NextResponse } from "next/server"
 import { adminClient } from "../../../../lib/adminSanity"
+import { revalidatePath } from "next/cache"
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+    const product = await adminClient.create({
+      _type: "product",
+      ...body,
+    })
+
+    // Revalidate so new product shows immediately on website
+    revalidatePath("/")
+    revalidatePath("/shop")
+
+    return NextResponse.json(product)
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to create product" },
+      { status: 500 }
+    )
+  }
+}
 
 export async function GET() {
   try {
@@ -10,19 +32,9 @@ export async function GET() {
     )
     return NextResponse.json(products)
   } catch {
-    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
-  }
-}
-
-export async function POST(req: Request) {
-  try {
-    const body = await req.json()
-    const product = await adminClient.create({
-      _type: "product",
-      ...body,
-    })
-    return NextResponse.json(product)
-  } catch {
-    return NextResponse.json({ error: "Failed to create product" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to fetch products" },
+      { status: 500 }
+    )
   }
 }

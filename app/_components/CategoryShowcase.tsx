@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 
 const CATS = [
   { label: "Skincare", emoji: "✨", desc: "Glow essentials", hoverClass: "hover:border-blue-400", glowClass: "from-blue-400/5" },
-  { label: "Kayamata", emoji: "🌺", desc: "Feminine wellness", hoverClass: "hover:border-pink-500", glowClass: "from-pink-500/5" },
-  { label: "Body Care", emoji: "🧴", desc: "Head-to-toe luxury", hoverClass: "hover:border-violet-400", glowClass: "from-violet-400/5" },
-  { label: "Fragrance", emoji: "🌸", desc: "Signature scents", hoverClass: "hover:border-pink-300", glowClass: "from-pink-300/5" },
-];
+  { label: "Gold", emoji: "⭐", desc: "Luxury gold pieces", hoverClass: "hover:border-yellow-400", glowClass: "from-yellow-400/5" },
+  { label: "Diamonds", emoji: "💎", desc: "Precious diamonds", hoverClass: "hover:border-cyan-400", glowClass: "from-cyan-400/5" },
+  { label: "Watches", emoji: "⌚", desc: "Elegant timepieces", hoverClass: "hover:border-purple-400", glowClass: "from-purple-400/5" },
+]
 
-const MARQUEE_ITEMS = ["✦ SKINCARE", "✦ KAYAMATA", "✦ BODY CARE", "✦ FRAGRANCE", "✦ GOLD COLLECTION", "✦ PREMIUM BEAUTY"];
+const MARQUEE_ITEMS = ["✦ SKINCARE", "✦ GOLD COLLECTION","✦ WATCHES", "✦ DIAMONDS" ,"✦ PREMIUM BEAUTY"];
 
 export default function CategoryShowcase() {
   const router = useRouter();

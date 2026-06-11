@@ -26,7 +26,7 @@ export default function ContactSection() {
       icon: FaTiktok,
       label: "TikTok",
       sub: "@Luxiana_Beauty",
-      href: "https://tiktok.com/@Luxiana_Beauty",
+      href: "https://www.tiktok.com/@Luxiana_Beauty",
       color: "#69C9D0",
       glow: "rgba(105,201,208,0.15)",
       border: "rgba(105,201,208,0.25)",

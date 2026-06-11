@@ -23,8 +23,8 @@ import {
   MdImage,
 } from "react-icons/md"
 
-const CATEGORIES = ["Skincare", "Kayamata", "Body Care", "Fragrance"]
-
+const CATEGORIES = ["Skincare", "Gold", "Diamonds", "Watches"] as const
+type Category = (typeof CATEGORIES)[number]
 const fmt = (n: string) => {
   const num = Number(n)
   if (!n || isNaN(num)) return ""
