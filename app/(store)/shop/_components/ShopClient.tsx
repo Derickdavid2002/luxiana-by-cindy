@@ -1,22 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Product } from "../../../types"
 import ProductCard from "../../../_components/ProductCard"
-import { MdSearch } from "react-icons/md"
+import { MdSearch, MdDiamond, MdWatch } from "react-icons/md"
+import { GiRing, GiGemNecklace } from "react-icons/gi"
 
-const CATEGORIES = ["All", "Skincare", "Gold", "Diamonds", "Watches"]
+const CATEGORIES = ["All", "Skincare", "Jewelry", "Ladies Care"]
+
+const JEWELRY_SUBCATEGORIES = [
+  { label: "Gold", icon: GiRing, color: "#f59e0b" },
+  { label: "Diamonds", icon: MdDiamond, color: "#67e8f9" },
+  { label: "Moissanite", icon: GiGemNecklace, color: "#a78bfa" },
+  { label: "Watches", icon: MdWatch, color: "#e2e8f0" },
+]
 
 export default function ShopClient({ products }: { products: Product[] }) {
-  const [activeCategory, setActiveCategory] = useState("All")
+  const searchParams = useSearchParams()
+  const [activeCategory, setActiveCategory] = useState(
+    searchParams.get("category") || "All"
+  )
   const [search, setSearch] = useState("")
 
+  useEffect(() => {
+    const cat = searchParams.get("category") || "All"
+    setActiveCategory(cat)
+  }, [searchParams])
+
   const filtered = products.filter(p => {
-    const matchCat =
-      activeCategory === "All" || p.category === activeCategory
-    const matchSearch = p.name
-      .toLowerCase()
-      .includes(search.toLowerCase())
+    const matchCat = activeCategory === "All" || p.category === activeCategory
+    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
     return matchCat && matchSearch
   })
 
@@ -35,8 +49,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] pointer-events-none"
           style={{
-            background:
-              "radial-gradient(ellipse, rgba(232,61,138,0.1), transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(232,61,138,0.1), transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -44,10 +57,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12">
           <p
             className="text-[11px] uppercase tracking-[5px] mb-3 font-semibold"
-            style={{
-              color: "#E83D8A",
-              textShadow: "0 0 10px rgba(232,61,138,0.4)",
-            }}
+            style={{ color: "#E83D8A", textShadow: "0 0 10px rgba(232,61,138,0.4)" }}
           >
             Browse
           </p>
@@ -56,7 +66,7 @@ export default function ShopClient({ products }: { products: Product[] }) {
           </h1>
 
           {/* Search */}
-          <div className="relative max-w-md mb-8">
+          <div className="relative max-w-md mb-6">
             <MdSearch
               size={16}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30"
@@ -70,17 +80,14 @@ export default function ShopClient({ products }: { products: Product[] }) {
               style={{
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid #1e1e1e",
-                color: "#f0f0f0",
               }}
-              onFocus={e =>
-                (e.target.style.borderColor = "rgba(232,61,138,0.4)")
-              }
+              onFocus={e => (e.target.style.borderColor = "rgba(232,61,138,0.4)")}
               onBlur={e => (e.target.style.borderColor = "#1e1e1e")}
             />
           </div>
 
           {/* Categories */}
-          <div className="flex gap-3 flex-wrap">
+          <div className="flex gap-3 flex-wrap mb-4">
             {CATEGORIES.map(cat => {
               const active = activeCategory === cat
               return (
@@ -89,18 +96,10 @@ export default function ShopClient({ products }: { products: Product[] }) {
                   onClick={() => setActiveCategory(cat)}
                   className="px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide transition-all duration-200 cursor-pointer"
                   style={{
-                    background: active
-                      ? "#E83D8A"
-                      : "transparent",
-                    color: active
-                      ? "#fff"
-                      : "rgba(255,255,255,0.5)",
-                    border: active
-                      ? "1px solid #E83D8A"
-                      : "1px solid #1e1e1e",
-                    boxShadow: active
-                      ? "0 0 20px rgba(232,61,138,0.35)"
-                      : "none",
+                    background: active ? "#E83D8A" : "transparent",
+                    color: active ? "#fff" : "rgba(255,255,255,0.5)",
+                    border: active ? "1px solid #E83D8A" : "1px solid #1e1e1e",
+                    boxShadow: active ? "0 0 20px rgba(232,61,138,0.35)" : "none",
                   }}
                 >
                   {cat}
@@ -109,25 +108,34 @@ export default function ShopClient({ products }: { products: Product[] }) {
             })}
           </div>
 
-          {/* Enquiry note — shows when Gold or Diamonds selected */}
-          {(activeCategory === "Gold" || activeCategory === "Diamonds") && (
-            <div
-              className="mt-5 flex items-center gap-2 px-4 py-3 rounded-xl max-w-md"
-              style={{
-                background: "rgba(37,211,102,0.06)",
-                border: "1px solid rgba(37,211,102,0.15)",
-              }}
-            >
-              <div
-                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                style={{ background: "#25D366" }}
-              />
-              <p className="text-[12px] text-white/40">
-                {activeCategory} items are available by{" "}
-                <span className="text-green-400 font-semibold">
-                  WhatsApp enquiry only
-                </span>
-                . Click any item to enquire.
+          {/* Jewelry subcategory chips */}
+          {(activeCategory === "Jewelry" || activeCategory === "All") && (
+            <div className="flex flex-col gap-2">
+              <p className="text-[10px] uppercase tracking-[3px] text-white/25 font-semibold">
+                Jewelry includes:
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {JEWELRY_SUBCATEGORIES.map(({ label, icon: Icon, color }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold"
+                    style={{
+                      background: `${color}18`,
+                      border: `1px solid ${color}35`,
+                      color: color,
+                    }}
+                  >
+                    <Icon size={11} />
+                    {label}
+                  </div>
+                ))}
+              </div>
+              <p className="text-[11px] text-white/25 flex items-center gap-1.5 mt-0.5">
+                <span
+                  className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: "#25D366" }}
+                />
+                Jewelry items are available by WhatsApp enquiry only
               </p>
             </div>
           )}
@@ -155,15 +163,11 @@ export default function ShopClient({ products }: { products: Product[] }) {
           <>
             <p className="text-white/30 text-sm mb-8">
               Showing{" "}
-              <span
-                className="font-semibold"
-                style={{ color: "#E83D8A" }}
-              >
+              <span className="font-semibold" style={{ color: "#E83D8A" }}>
                 {filtered.length}
               </span>{" "}
               product{filtered.length !== 1 ? "s" : ""}
             </p>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filtered.map(product => (
                 <ProductCard key={product._id} product={product} />

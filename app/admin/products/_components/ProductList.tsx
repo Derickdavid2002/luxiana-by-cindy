@@ -20,7 +20,7 @@ import {
   MdInventory2,
 } from "react-icons/md"
 
-const CATEGORIES = ["All", "Skincare", "Gold", "Diamonds", "Watches"]
+const CATEGORIES = ["All", "Skincare", "Jewelry", "Ladies Care"]
 const fmt = (n: number) => `₦${n.toLocaleString()}`
 
 export default function ProductList({

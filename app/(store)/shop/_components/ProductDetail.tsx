@@ -11,8 +11,7 @@ import { MdShoppingCart, MdCheck } from "react-icons/md"
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`
 
-const ENQUIRY_ONLY = ["Gold", "Diamonds"]
-
+const ENQUIRY_ONLY = ["Jewelry"]
 export default function ProductDetail({ product }: { product: Product }) {
   const [added, setAdded] = useState(false)
   const [qty, setQty] = useState(1)

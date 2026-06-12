@@ -42,50 +42,42 @@ export const PRODUCTS: Product[] = [
   {
     id: 4,
     name: "24K Gold Ring",
-    category: "Gold",
+    category: "Jewelry",
     price: 85000,
     description: "Elegant 24K gold ring crafted for the woman who appreciates true luxury.",
     image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80",
   },
   {
     id: 5,
-    name: "Gold Chain Necklace",
-    category: "Gold",
-    price: 120000,
-    description: "Handcrafted solid gold chain necklace. Timeless and sophisticated.",
-    image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&q=80",
-  },
-  {
-    id: 6,
     name: "Diamond Stud Earrings",
-    category: "Diamonds",
+    category: "Jewelry",
     price: 250000,
     description: "Brilliant cut diamond studs set in 18K white gold. Classic elegance.",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80",
   },
   {
-    id: 7,
-    name: "Diamond Tennis Bracelet",
-    category: "Diamonds",
-    price: 450000,
-    description: "Stunning row of princess cut diamonds set in gold. The ultimate statement piece.",
-    image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
-  },
-  {
-    id: 8,
+    id: 6,
     name: "Luxury Dress Watch",
-    category: "Watches",
+    category: "Jewelry",
     price: 320000,
     description: "Swiss movement dress watch with gold case and sapphire crystal glass.",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
   },
   {
-    id: 9,
-    name: "Rose Gold Watch",
-    category: "Watches",
-    price: 280000,
-    description: "Elegant rose gold timepiece with diamond-set bezel. Pure sophistication.",
-    image: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=600&q=80",
+    id: 7,
+    name: "Ladies Wellness Pack",
+    category: "Ladies Care",
+    price: 15000,
+    description: "Premium feminine wellness pack crafted with natural ingredients.",
+    image: "https://images.unsplash.com/photo-1599305090598-fe179d501227?w=600&q=80",
+  },
+  {
+    id: 8,
+    name: "Feminine Oil Blend",
+    category: "Ladies Care",
+    price: 12000,
+    description: "Traditional feminine wellness oil with premium natural extracts.",
+    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600&q=80",
   },
 ]
 
@@ -110,10 +102,10 @@ export const GOLD_ITEMS: GoldItem[] = [
   },
 ]
 
-export const CATEGORIES = ["All", "Skincare", "Gold", "Diamonds", "Watches"]
+export const CATEGORIES = ["All", "Skincare", "Jewelry", "Ladies Care"]
 
 export const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=1600&q=90",
-  "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1600&q=90",
-  "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1600&q=90",
+  "https://images.unsplash.com/photo-1617897903246-719242758050?w=1600&q=90",
+  "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1600&q=90",
+  "https://images.unsplash.com/photo-1599305090598-fe179d501227?w=1600&q=90",
 ]

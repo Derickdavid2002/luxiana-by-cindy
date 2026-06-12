@@ -11,7 +11,7 @@ import { urlFor } from "@/lib/sanity";
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`;
 
-const ENQUIRY_ONLY = ["Gold", "Diamonds"];
+const ENQUIRY_ONLY = ["Gold", "Diamonds", "Jewelry", "Moissanite", "Watches"];
 
 export default function ProductCard({
   product,

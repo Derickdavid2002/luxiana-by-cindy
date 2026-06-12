@@ -138,7 +138,7 @@ export default function CheckoutForm({
         {/* Address */}
         <div className="flex flex-col gap-2">
           <label className="text-[11px] text-white/40 uppercase tracking-widest font-semibold">
-            Delivery Address *
+*State (Delivery Address) *
           </label>
           <div className="relative">
             <MdLocationOn size={16} className="absolute left-3.5 top-3.5 text-white/25" />

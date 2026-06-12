@@ -4,12 +4,11 @@ import { useRouter } from "next/navigation";
 
 const CATS = [
   { label: "Skincare", emoji: "✨", desc: "Glow essentials", hoverClass: "hover:border-blue-400", glowClass: "from-blue-400/5" },
-  { label: "Gold", emoji: "⭐", desc: "Luxury gold pieces", hoverClass: "hover:border-yellow-400", glowClass: "from-yellow-400/5" },
-  { label: "Diamonds", emoji: "💎", desc: "Precious diamonds", hoverClass: "hover:border-cyan-400", glowClass: "from-cyan-400/5" },
-  { label: "Watches", emoji: "⌚", desc: "Elegant timepieces", hoverClass: "hover:border-purple-400", glowClass: "from-purple-400/5" },
-]
+  { label: "Jewelry", emoji: "💎", desc: "Luxury gold, diamonds pieces", hoverClass: "hover:border-yellow-400", glowClass: "from-yellow-400/5" },
+  { label: "Ladies Care", emoji: "⭐", desc: "Comfortable ladies care", hoverClass: "hover:border-cyan-400", glowClass: "from-cyan-400/5" },
+];
 
-const MARQUEE_ITEMS = ["✦ SKINCARE", "✦ GOLD COLLECTION","✦ WATCHES", "✦ DIAMONDS" ,"✦ PREMIUM BEAUTY"];
+const MARQUEE_ITEMS = ["✦ SKINCARE", "✦ GOLD COLLECTION", "✦ WATCHES", "✦ DIAMONDS", "✦ PREMIUM BEAUTY"];
 
 export default function CategoryShowcase() {
   const router = useRouter();
@@ -43,13 +42,13 @@ export default function CategoryShowcase() {
             <div className="w-[60px] h-[2px] bg-gradient-to-r from-transparent via-[#E83D8A] to-transparent mx-auto mt-4" />
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Grid — centered with 3 cards */}
+          <div className="flex justify-center gap-4 flex-wrap">
             {CATS.map((cat) => (
               <button
                 key={cat.label}
                 onClick={() => router.push(`/shop?category=${cat.label}`)}
-                className={`group relative overflow-hidden bg-gradient-to-br from-[#141414] to-[#101010] border border-[#1e1e1e] rounded-2xl px-5 py-9 cursor-pointer text-center transition-all duration-300 hover:-translate-y-1 ${cat.hoverClass}`}
+                className={`group relative overflow-hidden bg-gradient-to-br from-[#141414] to-[#101010] border border-[#1e1e1e] rounded-2xl px-5 py-9 cursor-pointer text-center transition-all duration-300 hover:-translate-y-1 w-[280px] ${cat.hoverClass}`}
               >
                 <div className={`absolute inset-0 bg-gradient-to-b ${cat.glowClass} to-transparent`} />
                 <div className="text-[40px] mb-3.5">{cat.emoji}</div>

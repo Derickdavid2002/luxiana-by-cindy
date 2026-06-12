@@ -25,7 +25,7 @@ import {
   MdImage,
 } from "react-icons/md"
 
-const CATEGORIES = ["Skincare", "Kayamata", "Body Care", "Fragrance"] as const
+const CATEGORIES = ["Skincare", "Jewelry", "Ladies Care"] as const
 type Category = (typeof CATEGORIES)[number]
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`

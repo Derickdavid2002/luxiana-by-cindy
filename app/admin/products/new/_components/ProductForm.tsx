@@ -23,7 +23,7 @@ import {
   MdImage,
 } from "react-icons/md"
 
-const CATEGORIES = ["Skincare", "Gold", "Diamonds", "Watches"] as const
+const CATEGORIES = ["Skincare", "Jewelry", "Ladies Care"] as const
 type Category = (typeof CATEGORIES)[number]
 const fmt = (n: string) => {
   const num = Number(n)

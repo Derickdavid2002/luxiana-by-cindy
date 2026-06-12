@@ -106,7 +106,7 @@ export default function BankDetails({
           <li>• Transfer the <strong className="text-white/60">exact amount</strong> shown above</li>
           <li>• Take a <strong className="text-white/60">screenshot</strong> of your transfer confirmation</li>
           <li>• Click <strong className="text-white/60">I've Made Payment</strong> to upload your proof</li>
-          <li>• Your order will be confirmed after payment verification</li>
+<li>• Delivery fee will be communicated after order confirmation</li>
         </ul>
       </div>
 
