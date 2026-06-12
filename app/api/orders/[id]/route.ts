@@ -68,7 +68,7 @@ export async function PATCH(
     const emailData = emailMap[status]
     if (emailData && order.customer?.email) {
       await resend.emails.send({
-        from: "Luxiana Beauty <onboarding@resend.dev>",
+        from: "Luxiana Beauty <orders@luxianabeauty.com>",
         to: [order.customer.email],
         subject: emailData.subject,
         html: emailData.html,
