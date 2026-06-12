@@ -14,6 +14,7 @@ function generateOrderNumber() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
+
     const {
       customer,
       delivery,
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
 
     const orderNumber = generateOrderNumber()
 
-    // Save order to Sanity
+    // 1. Save order
     const order = await adminClient.create({
       _type: "order",
       orderNumber,
@@ -46,12 +47,10 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString(),
     })
 
-    // Send confirmation email to customer
-    // ✅ TO CHANGE LATER: Once you have a domain verified in Resend,
-    // change `from` to: "Luxiana Beauty <orders@yourdomain.com>"
-    await resend.emails.send({
+    // 2. CUSTOMER EMAIL
+    const customerEmail = await resend.emails.send({
       from: "Luxiana Beauty <orders@luxianabeauty.com>",
-      to: [customer.email], // ✅ Goes directly to customer's email
+      to: [customer.email],
       subject: `Order Received — #${orderNumber}`,
       html: orderPlacedTemplate({
         customerName: customer.name,
@@ -65,9 +64,10 @@ export async function POST(req: Request) {
       }),
     })
 
-    // Send new order alert to admin (Cindy)
-    // ✅ TO CHANGE LATER: Change ADMIN_EMAIL in .env.local to Cindy's real email
-    await resend.emails.send({
+    console.log("Customer email result:", customerEmail)
+
+    // 3. ADMIN EMAIL
+    const adminEmail = await resend.emails.send({
       from: "Luxiana Beauty <orders@luxianabeauty.com>",
       to: [ADMIN_EMAIL],
       subject: `🛍 New Order — #${orderNumber}`,
@@ -86,34 +86,21 @@ export async function POST(req: Request) {
       }),
     })
 
+    console.log("Admin email result:", adminEmail)
+
     return NextResponse.json({
       success: true,
       orderNumber,
       orderId: order._id,
     })
   } catch (error) {
-    console.error("Order creation error:", error)
-    return NextResponse.json(
-      { error: "Failed to create order" },
-      { status: 500 }
-    )
-  }
-}
+    console.error("ORDER CREATION ERROR:", error)
 
-export async function GET(_req: Request) {
-  try {
-    const orders = await adminClient.fetch(
-      `*[_type == "order"] | order(createdAt desc) {
-        _id, orderNumber, status, customer, delivery,
-        items, subtotal, total, createdAt
-      }`,
-      {},
-      { cache: "no-store" }
-    )
-    return NextResponse.json(orders)
-  } catch {
     return NextResponse.json(
-      { error: "Failed to fetch orders" },
+      {
+        success: false,
+        error: "Failed to create order",
+      },
       { status: 500 }
     )
   }
