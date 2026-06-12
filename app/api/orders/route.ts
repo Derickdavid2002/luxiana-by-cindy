@@ -13,7 +13,12 @@ function generateOrderNumber() {
 
 export async function POST(req: Request) {
   try {
+    console.log("ORDER API HIT")
+    console.log("HAS RESEND KEY:", !!process.env.RESEND_API_KEY)
+    console.log("ADMIN EMAIL:", process.env.ADMIN_EMAIL)
+
     const body = await req.json()
+
     const {
       customer,
       delivery,
@@ -25,6 +30,8 @@ export async function POST(req: Request) {
     } = body
 
     const orderNumber = generateOrderNumber()
+
+    console.log("Creating order:", orderNumber)
 
     // Save order to Sanity
     const order = await adminClient.create({
@@ -46,12 +53,14 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString(),
     })
 
-    // Send confirmation email to customer
-    // ✅ TO CHANGE LATER: Once you have a domain verified in Resend,
-    // change `from` to: "Luxiana Beauty <orders@yourdomain.com>"
-    await resend.emails.send({
+    console.log("Order saved successfully:", order._id)
+
+    // CUSTOMER EMAIL
+    console.log("Sending customer email to:", customer.email)
+
+    const customerResult = await resend.emails.send({
       from: "Luxiana Beauty <orders@luxianabeauty.com>",
-      to: [customer.email], // ✅ Goes directly to customer's email
+      to: [customer.email],
       subject: `Order Received — #${orderNumber}`,
       html: orderPlacedTemplate({
         customerName: customer.name,
@@ -65,9 +74,15 @@ export async function POST(req: Request) {
       }),
     })
 
-    // Send new order alert to admin (Cindy)
-    // ✅ TO CHANGE LATER: Change ADMIN_EMAIL in .env.local to Cindy's real email
-    await resend.emails.send({
+    console.log(
+      "CUSTOMER EMAIL RESULT:",
+      JSON.stringify(customerResult, null, 2)
+    )
+
+    // ADMIN EMAIL
+    console.log("Sending admin email to:", ADMIN_EMAIL)
+
+    const adminResult = await resend.emails.send({
       from: "Luxiana Beauty <orders@luxianabeauty.com>",
       to: [ADMIN_EMAIL],
       subject: `🛍 New Order — #${orderNumber}`,
@@ -86,15 +101,24 @@ export async function POST(req: Request) {
       }),
     })
 
+    console.log(
+      "ADMIN EMAIL RESULT:",
+      JSON.stringify(adminResult, null, 2)
+    )
+
     return NextResponse.json({
       success: true,
       orderNumber,
       orderId: order._id,
     })
   } catch (error) {
-    console.error("Order creation error:", error)
+    console.error("ORDER CREATION ERROR:", error)
+
     return NextResponse.json(
-      { error: "Failed to create order" },
+      {
+        success: false,
+        error: "Failed to create order",
+      },
       { status: 500 }
     )
   }
@@ -104,14 +128,24 @@ export async function GET(_req: Request) {
   try {
     const orders = await adminClient.fetch(
       `*[_type == "order"] | order(createdAt desc) {
-        _id, orderNumber, status, customer, delivery,
-        items, subtotal, total, createdAt
+        _id,
+        orderNumber,
+        status,
+        customer,
+        delivery,
+        items,
+        subtotal,
+        total,
+        createdAt
       }`,
       {},
       { cache: "no-store" }
     )
+
     return NextResponse.json(orders)
-  } catch {
+  } catch (error) {
+    console.error("FETCH ORDERS ERROR:", error)
+
     return NextResponse.json(
       { error: "Failed to fetch orders" },
       { status: 500 }
