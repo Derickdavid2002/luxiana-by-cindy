@@ -39,16 +39,16 @@ export default function SettingsClient() {
   ]
 
   const bankInfo = [
-    { label: "Bank", value: "Opay" },
-    { label: "Account Number", value: "7086253922", copyKey: "account" },
-    { label: "Account Name", value: "Isibor Gloria Cynthia", copyKey: "name" },
+    { label: "Bank", value: "First Bank" },
+    { label: "Account Number", value: "2049046854", copyKey: "account" },
+    { label: "Account Name", value: "Luxiana beauty ltd", copyKey: "name" },
   ]
 
   const socialLinks = [
     { icon: FaWhatsapp, label: "WhatsApp", value: "wa.me/2348081859922", color: "#25D366" },
     { icon: FaInstagram, label: "Instagram", value: "@Luxiana_Beauty", color: "#E1306C" },
     { icon: FaTiktok, label: "TikTok", value: "@Luxiana_Beauty", color: "#69C9D0" },
-    { icon: FaSnapchat, label: "Snapchat", value: "@Sweeetcin", color: "#FFFC00" },
+    { icon: FaSnapchat, label: "Snapchat", value: "Sweet_Cin", color: "#FFFC00" },
   ]
 
   return (

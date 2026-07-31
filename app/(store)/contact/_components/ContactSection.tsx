@@ -35,7 +35,7 @@ export default function ContactSection() {
       icon: FaSnapchat,
       label: "Snapchat",
       sub: "@Sweeetcin",
-      href: "https://snapchat.com/add/Sweeetcin",
+      href: "https://snapchat.com/add/Sweeet_cin",
       color: "#FFFC00",
       glow: "rgba(255,252,0,0.15)",
       border: "rgba(255,252,0,0.25)",

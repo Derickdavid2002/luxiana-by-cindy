@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { MdArrowBack, MdArrowForward, MdContentCopy, MdCheck } from "react-icons/md"
 
 const BANK = {
-  bankName: "Opay",
-  accountNumber: "7086253922",
-  accountName: "Isibor Gloria Cynthia",
+  bankName: "First Bank",
+  accountNumber: "2049046854",
+  accountName: "Luxiana beauty ltd",
 }
 
 const fmt = (n: number) => `₦${n.toLocaleString()}`

@@ -13,7 +13,7 @@ export default function Footer() {
     { href: "https://wa.me/2348081859922", icon: FaWhatsapp, label: "WhatsApp", color: "#25D366", bg: "rgba(37,211,102,0.1)", border: "rgba(37,211,102,0.2)" },
     { href: "https://instagram.com/Luxiana_Beauty", icon: FaInstagram, label: "Instagram", color: "#E1306C", bg: "rgba(225,48,108,0.1)", border: "rgba(225,48,108,0.2)" },
     { href: "https://tiktok.com/@Luxiana_Beauty", icon: FaTiktok, label: "TikTok", color: "#69C9D0", bg: "rgba(105,201,208,0.1)", border: "rgba(105,201,208,0.2)" },
-    { href: "https://snapchat.com/add/Sweeetcin", icon: FaSnapchat, label: "Snapchat", color: "#FFFC00", bg: "rgba(255,252,0,0.1)", border: "rgba(255,252,0,0.2)" },
+    { href: "https://snapchat.com/t/HWBkGP28", icon: FaSnapchat, label: "Snapchat", color: "#FFFC00", bg: "rgba(255,252,0,0.1)", border: "rgba(255,252,0,0.2)" },
   ]
 
   return (
